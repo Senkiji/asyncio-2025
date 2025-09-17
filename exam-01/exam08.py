@@ -7,13 +7,14 @@
 import aiohttp
 import asyncio
 
-async def fetch(url):
-    session = aiohttp.ClientSession()   # ไม่ปิด
+async def fetch(session, url):
     async with session.get(url) as resp:
-        return await resp.text()
+        text = await resp.text()
+        return text
 
 async def main():
-    html = await fetch("https://example.com")
-    print(len(html))
+    async with aiohttp.ClientSession() as session:
+        html = await fetch(session, "https://example.com")
+        print(len(html))
 
 asyncio.run(main())
